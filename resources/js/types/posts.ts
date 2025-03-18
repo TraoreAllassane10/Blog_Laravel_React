@@ -16,7 +16,19 @@ export interface Post
     author: Author,
     is_liked: boolean,
     likes_count: number,
-    user_id: number
+    user_id: number,
+    comments_count: number
+    comments: Comment[]
+}
+
+export interface Comment
+{
+    id: number,
+    user_id: number,
+    post_id: number,
+    content: string,
+    parent_id: number,
+    author: string
 }
 
 export interface PostFormData
@@ -41,6 +53,10 @@ export interface EditProps extends PageProps{
 
 export interface ShowProps extends PageProps{
     post: Post
+}
+
+export interface CommentProps extends PageProps{
+    postC: Post
 }
 
 export interface Props {

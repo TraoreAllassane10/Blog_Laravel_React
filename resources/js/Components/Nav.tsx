@@ -1,4 +1,5 @@
 import { Link, usePage } from "@inertiajs/react";
+import { Star } from "lucide-react";
 
 export default function Nav() {
     const { auth } = usePage().props as any;
@@ -16,6 +17,10 @@ export default function Nav() {
                     </div>
 
                     <div className="flex items-center space-x-4">
+                        <Link href={route("dashboard")}>
+                            <Star/>
+                        </Link>
+
                         {auth.user ? (
                             <Link
                                 href={route("dashboard")}

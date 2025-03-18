@@ -1,10 +1,9 @@
 import { Post, Props } from "@/types/posts";
 import { usePage, router, Link } from "@inertiajs/react";
 import React, { useState } from "react";
-import { Card, CardContent, CardFooter, CardHeader, } from "../ui/card";
-import { Edit, Eye, Heart, Trash2 } from "lucide-react";
+import { Card, CardContent, CardFooter, CardHeader } from "../ui/card";
+import { Edit, Eye, Heart, MessageCircle, Trash2 } from "lucide-react";
 import { Button } from "../ui/button";
-
 
 export default function ListPost({ posts, showAuthor = true }: Props) {
     const { auth } = usePage().props as any;
@@ -61,56 +60,92 @@ export default function ListPost({ posts, showAuthor = true }: Props) {
                     </CardHeader>
 
                     <CardContent>
-                       <p className="text-gray-600 line-clamp-3 nb-4">
+                        <p className="text-gray-600 line-clamp-3 nb-4">
                             {post.description}
-                       </p>
+                        </p>
 
-                       <div className="flex items-center justify-between text-sm text-gray-500">
-                            {showAuthor && (
-                                <span>Par {post.author.name}</span>
-                            )}
+                        <div className="flex items-center justify-between text-sm text-gray-500">
+                            {showAuthor && <span>Par {post.author.name}</span>}
 
-                            <span>{new Date(post.created_at).toLocaleDateString('fr-FR')}</span>
-                       </div>
+                            <span>
+                                {new Date(post.created_at).toLocaleDateString(
+                                    "fr-FR"
+                                )}
+                            </span>
+                        </div>
                     </CardContent>
 
                     <CardFooter className="flex items-center justify-between">
                         <div className="flex items-center justify-end space-x-2">
-                           <Button variant="ghost" size="icon" onClick={() => handleLike(post.id)} className=
-                           {`transition-colors ${post.is_liked ? "text-red-600 hover:text-red-700" :
-                            "text-text-gray-600 hover:text-red-700"
-                           }`}>
-                                <Heart className="h-6 w-6 " fill={post.is_liked ? "currentColor" : "none"}/>
-                           </Button>
-
-                           <div className="text-gray-600">
+                            <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={() => handleLike(post.id)}
+                                className={`transition-colors ${
+                                    post.is_liked
+                                        ? "text-red-600 hover:text-red-700"
+                                        : "text-text-gray-600 hover:text-red-700"
+                                }`}
+                            >
+                                <Heart
+                                    className="h-6 w-6 "
+                                    fill={
+                                        post.is_liked ? "currentColor" : "none"
+                                    }
+                                />
+                            </Button>
+                            <div className="text-gray-600">
                                 {post.likes_count}
-                           </div>
+                            </div>
+
+                            {/* Bouton de commentaire */}
+                            <Button
+                                variant="ghost"
+                                size="icon"
+                                className={`transition-colors ${
+                                    post.is_liked
+                                        ? "text-red-600 hover:text-red-700"
+                                        : "text-text-gray-600 hover:text-red-700"
+                                }`}
+                            >
+                                <Link href={route('comments.create', post.id)}>
+                                    <MessageCircle className="h-6 w-6 " />
+                                </Link>
+                            </Button>
+                            <div className="text-gray-600">
+                                {post.comments_count}
+                            </div>
                         </div>
 
                         <div className="flex items-center space-x-3">
-                           <Button variant="link" asChild>
+                            <Button variant="link" asChild>
                                 <Link href={route("posts.show", post.id)}>
-                                        <Eye/>
+                                    <Eye />
                                 </Link>
-                           </Button>
+                            </Button>
 
-                           {canEditPost(post) && (
+                            {canEditPost(post) && (
                                 <>
                                     <Button variant="ghost" asChild>
-                                        <Link href={route("posts.edit", post.id)}>
-                                            <Edit/>
+                                        <Link
+                                            href={route("posts.edit", post.id)}
+                                        >
+                                            <Edit />
                                         </Link>
                                     </Button>
 
-                                    <Button onClick={() => handleDelete(post.id)}  disabled={deletingId === post.id}
-                                     variant="ghost" asChild className="text-red-500
-                                     hover:text-red-700 ">
-                                       <Trash2/>
+                                    <Button
+                                        onClick={() => handleDelete(post.id)}
+                                        disabled={deletingId === post.id}
+                                        variant="ghost"
+                                        asChild
+                                        className="text-red-500
+                                     hover:text-red-700 "
+                                    >
+                                        <Trash2 />
                                     </Button>
                                 </>
-                           )
-                           }
+                            )}
                         </div>
                     </CardFooter>
                 </Card>

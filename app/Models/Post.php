@@ -2,11 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Comment;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Support\Facades\Auth;
 
 class Post extends Model
 {
@@ -20,9 +21,9 @@ class Post extends Model
         'user_id',
     ];
 
-    protected $appends = ['is_liked', 'likes_count'];
+    protected $appends = ['is_liked', 'likes_count', 'comments_count'];
 
-    protected $with = ['likedBy'];
+    protected $with = ['likedBy', 'comments'];
 
     public function author(): BelongsTo
     {
@@ -42,5 +43,15 @@ class Post extends Model
     public function getLikesCountAttribute(): int
     {
         return $this->likedBy()->count();
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
+    public function getCommentsCountAttribute(): int
+    {
+        return $this->comments()->count();
     }
 }

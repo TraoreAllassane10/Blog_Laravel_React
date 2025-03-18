@@ -64,7 +64,7 @@ export default function Create({}: CreateProps){
                                 {errors.title && <div className="bg-red-500 text-sm">{errors.title}</div>}
                             </div>
                             <div className="space-y-2">
-                                <Label htmlFor="description">Titre</Label>
+                                <Label htmlFor="description">Description</Label>
                                 <Textarea id="description" value={data.description} onChange={(e) => setData("description", e.target.value)}/>
                                 {errors.description && <div className="bg-red-500 text-sm">{errors.description}</div>}
                             </div>
